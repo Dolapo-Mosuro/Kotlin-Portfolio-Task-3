@@ -1,39 +1,50 @@
 package com.example.dportfolio
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.GridView
 import android.widget.Toast
-import androidx.appcompat.app.AlertController
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
+
+    private var recyclerView:RecyclerView ? = null
+    private var gridLayoutManager:GridLayoutManager ? = null
+    private var arrayList:ArrayList<DeeList> ? = null
+    private var deeListAdapter:DeeListAdapter ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val gridView = findViewById<GridView>(R.id.gridView) as GridView
+        recyclerView = findViewById(R.id.recycler_view_item)
+        gridLayoutManager =
+            GridLayoutManager(applicationContext, 3, LinearLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager = gridLayoutManager
+        recyclerView?.setHasFixedSize(true)
 
-        val mylist = ArrayList<DeeList>()
 
-        mylist.add(DeeList(R.drawable.twit,"Twitter","Follow me on @oluwadolamipoh"))
-        mylist.add(DeeList(R.drawable.facebook,"Facebook", "Like my page"))
-        mylist.add(DeeList(R.drawable.linkedin,"LinkedIn", "Follow my profile"))
-        mylist.add(DeeList(R.drawable.github,"github", "Follow me"))
-        mylist.add(DeeList(R.drawable.skype,"Skype", "Let's Chat"))
+        charItem = ArrayList()
+        charItem = setAlphas()
 
-        val custom_list : ArrayAdapter<String> = ArrayAdapter(this@MainActivity,android.R.custom_list,list)
-        gridView.adapter = custom_list
-
-        gridView.onitemClickListener = AdapterView.OnitemClickListener{ parent, _, position, id ->
-
-            Toast.makeText(this@MainActivity, "Done:-$id", Toast.LENGTH_SHORT).show()
-        }
+        deeListAdapter= DeeListAdapter(applicationContext, charItem!!)
+        recyclerView?.adapter = deeListAdapter
     }
 
-    class DeeList ( var mDeeListImage:Int,
-                    var mDeeListTextOne:String,
-                    var mDeeListTextTwo: String)
-}
+    private fun setAlphas(): ArrayList<DeeList.CharItem> {
+
+        var arrayList: ArrayList<CharItem> = ArrayList()
+
+        arrayList.add(CharItem(R.drawable.twitter, "Twitter", "Follow me @oluwadolamipoh"))
+        arrayList.add(CharItem(R.drawable.facebook,"Facebook", "Like my page"))
+        arrayList.add(CharItem(R.drawable.linkedin,"LinkedIn", "Follow my profile"))
+        arrayList.add(CharItem(R.drawable.github,"github", "Follow me"))
+        arrayList.add(CharItem(R.drawable.skype,"Skype", "Let's Chat"))
+
+
+
+
+
